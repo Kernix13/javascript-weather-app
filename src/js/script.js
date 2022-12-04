@@ -3,7 +3,7 @@ const cityName = document.getElementById('city-name');
 const userCity = cityName.value;
 
 // CITY Zip
-const locationByZip = 'http://api.openweathermap.org/geo/1.0/zip?zip=19064,US&appid=804cf3b11e9abeee25a8f6e6cb189d31';
+const locationByZip = 'http://api.openweathermap.org/geo/1.0/zip?zip=19064,US&appid=' + process.env.API_KEY;
 
 let city = '';
 async function fetchByUrl(url) {
@@ -30,9 +30,9 @@ const cityLat = document.querySelector('.lat');
 const cityLong = document.querySelector('.long');
 
 // Need to convert this to zip and country code example
-const currentWeatherCity = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + '&units=imperial&APPID=804cf3b11e9abeee25a8f6e6cb189d31'
+const currentWeatherCity = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + '&units=imperial&APPID={API key}'
 // Same as above
-const dayHourWeatherCity = 'https://api.openweathermap.org/data/2.5/onecall?lat=39.95&lon=-75.16&exclude=minutely&units=imperial&appid=804cf3b11e9abeee25a8f6e6cb189d31';
+const dayHourWeatherCity = 'https://api.openweathermap.org/data/2.5/onecall?lat=39.95&lon=-75.16&exclude=minutely&units=imperial&appid={API key}';
 
 // CURRENT CONDITIONS SELECTORS
 const cityH2 = document.querySelector('.city');
