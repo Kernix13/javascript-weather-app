@@ -52,6 +52,11 @@ img {
   margin: 1em auto;
 }
 
+.container {
+  margin: 0 auto;
+  text-align: center;
+}
+
 .weather-container {
   padding: 0.5rem 1rem;
 }
@@ -146,6 +151,27 @@ p {
 // li {
 //   display: inline-block;
 // }
+
+.fa-solid, .fa-regular {
+  font-size: 3rem;
+  margin: 0.5em 0;
+}
+
+.fa-sun {
+  color: rgb(255, 200, 0);
+}
+
+.fa-cloud-sun, .fa-cloud-rain {
+  color: #ccc;
+}
+.fa-cloud {
+  color: #777;
+}
+.fa-snowflake {
+  color: silver;
+  background-color: white;
+  padding: 0.125em;
+}
 
 @media (min-width: 501px) {
   img {

@@ -4,6 +4,7 @@ node_modules
 # Production and other folders
 /build
 /dist
+src/images
 
 ### VisualStudioCode ###
 .vscode/*
@@ -23,6 +24,11 @@ ehthumbs_vista.db
 *.tmp
 
 # Personal files
+index.html
+test.html
+/src/js/index.js
+/src/js/test.js
+/src/scss/test.css
 notes.md
 parcel.md
 sass.md

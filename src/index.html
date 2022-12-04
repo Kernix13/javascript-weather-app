@@ -5,6 +5,10 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="./src/images/favicon2.ico" rel="icon" type="image/x-icon" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="./scss/style.css" />
   <title>Weather App</title>
 </head>
@@ -13,18 +17,23 @@
   <div class="weather-container">
     <form id="city-form">
       <label for="">Enter City or zip code (not working)</label>
-      <input id="city-name" type="text" placeholder="Enter city name" name="city-name" />
+      <input id="zip-code" type="text" placeholder="Enter your zip code" name="zip-code" />
       <input id="user-city" type="submit" />
     </form>
-    <p class="cityoutput"></p>
-    <div class="location"></div>
-    <h2 class="city"></h2>
-    <p class="lat"></p>
-    <p class="long"></p>
-    <img class="icon" />
-    <p class="weather"></p>
-    <p class="temp"></p>
-    <span id="wtf" class="feels-like"></span>
+    <div class="container">
+      <div class="location"></div>
+      <h2 class="city"></h2>
+      <div id="clock"></div>
+      <div>
+        <span class="lat"></span>
+        <span class="long"></span>
+      </div>
+      <!-- <img class="icon" /> -->
+      <i id="icon"></i>
+      <p class="weather"></p>
+      <p class="temp"></p>
+      <span id="wtf" class="feels-like"></span>
+    </div>
     <div class="row">
       <div class="col">
         <p class="wind-speed"></p>
@@ -47,15 +56,15 @@
         <p class="alert"></p>
       </div>
     </div>
-
+  
     <div class="hourly">
       <ul id="hourly-data" class="hourly-data"></ul>
     </div>
-
+  
     <div class="daily">
       <ul id="daily-data" class="daily-data"></ul>
     </div>
-
+  
     <div class="alerts">
       <ul id="weather-alerts" class="weather-alerts">
         Weather alerts go here...

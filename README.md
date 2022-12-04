@@ -2,6 +2,16 @@
 
 Conversion of my jQuery weather app to pure JavaScript. Data from openweather.org. Used Parcel to compile the SCSS files.
 
+> TO-DO Items
+
+1. get current time (DONE)
+1. Weather by Zip Code
+1. Weather maps
+1. Total redo of the CSS - MOBILE-FIRST
+1. Fahrenheit to Celsius conversion
+1. Settings?
+1. Historical weather data?
+
 ## Something goes here
 
 Links:
@@ -31,3 +41,10 @@ const weatherMap2 = `http://maps.openweathermap.org/maps/2.0/weather/{op}/{z}/{x
 ```
 
 > Please use ISO 3166 country codes, `US` not USA
+
+## Setup
+
+1. Add your own favicon icon into `src\images`
+1. Add your own API key into `src/js/script.js`, or:
+1. Create `.env` file in the root and add your openweather.org API key into there.
+1. I chose to use Font Awesome icons because the ones from openweathermap suck!. Feel free to use any other icons or remove that code altogether.
