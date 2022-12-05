@@ -1,8 +1,10 @@
 # Vanilla JavaScript Weather APP
 
-Conversion of my jQuery weather app to pure JavaScript. Data from openweather.org. Used Parcel to compile the SCSS files.
+Conversion of my jQuery weather app to pure JavaScript. Data from openweather.org. I will eventually use Parcel to compile the SCSS files which I don't have yet, plus I am still building the UI in Figma.
 
-> TO-DO Items
+> As of Dec 5th 2022, this is still a Work-In-Progress. I will eventually create a React version for the settings functionality
+
+TO-DO Items:
 
 1. get current time (DONE)
 1. Weather by Zip Code (DONE)
@@ -11,7 +13,7 @@ Conversion of my jQuery weather app to pure JavaScript. Data from openweather.or
 1. Weather maps
 1. Total redo of the CSS - MOBILE-FIRST
 1. Fahrenheit to Celsius conversion
-1. Settings? Let user uncheck fields like visibility, humidity, etc.
+1. Settings? Let user uncheck fields like visibility, humidity, etc. (React?)
 1. Historical weather data?
 1. List of difficulties/issues while building this app:
    1. **PROBLEM**: original program used jQuery, **SOLUTIOn**: Converted to vanilla JS
