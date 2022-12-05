@@ -8,11 +8,12 @@ TO-DO Items:
 
 1. get current time (DONE)
 1. Weather by Zip Code (DONE)
+1. Finish pade designs in Figma (in process)
+1. Total redo of the CSS - MOBILE-FIRST
 1. Get zip code input field working
 1. Set weather by user's Geolocation, else default to input field (Not realistic), so maybe set to a default city like Philadelphia or New York
 1. Weather maps
-1. Total redo of the CSS - MOBILE-FIRST
-1. Fahrenheit to Celsius conversion
+1. Fahrenheit to Celsius conversion (Settings?)
 1. Settings? Let user uncheck fields like visibility, humidity, etc. (React?)
 1. Historical weather data?
 1. List of difficulties/issues while building this app:
