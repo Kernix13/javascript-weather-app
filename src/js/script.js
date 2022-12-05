@@ -1,6 +1,13 @@
 const form = document.getElementById('city-form');
-// Need to change this to zipCode and remove the hard-coded variable below when I have the form functional
+// I need an event listener
 const zip_code = document.getElementById('zip-code').value;
+console.log("zip_code: " + zip_code)
+
+// I get a 404 Not Found error from the fetchByZip try/catch block the moment I click in the input field - change input:submit to an actual button
+// form.addEventListener("click", function(e) {
+//   fetchByZip();
+//   e.preventDefault();
+// }) 
 
 // CURRENT CONDITIONS SELECTORS
 const cityHeading = document.querySelector('.city');
@@ -61,19 +68,24 @@ const weatherIcons = {
   '50n': 'fa-solid fa-cloud-rain',
 }
 
+let zipCode = '19064';
+
 async function fetchByZip(zip) {
+  // if (zip_code) zipCode = zip_code;
+
   try {
-    const response = await fetch('http://api.openweathermap.org/geo/1.0/zip?zip=' + zip + ',US&appid=API_KEY_HERE');
+    const response = await fetch('http://api.openweathermap.org/geo/1.0/zip?zip=' + zip + ',US&appid={API_KEY}');
 
     if (response.ok) {
       const data = await response.json();
       const city = data.name;
       const cityData = {
-        latitude: data.lat.toFixed(2) * 1,
-        longitude: data.lon.toFixed(2) * 1,
+        latitude: data.lat,
+        longitude: data.lon,
         zip
       }
-      const output = [city, cityData]
+      const output = [city, cityData];
+      // console.log(output)
       return output;
     } else {
       console.log("Not Successful");
@@ -83,7 +95,8 @@ async function fetchByZip(zip) {
   }
 }
 
-const zipCode = '19455';
+if (zip_code) zipCode = zip_code;
+
 fetchByZip(zipCode)
 
 // Current conditions
@@ -92,37 +105,45 @@ async function fetchCurrent() {
     const city = await fetchByZip(zipCode);
     const cityName = city[0]
     const cityZip = city[1].zip
+    const latitude = city[1].latitude
+    const longitude = city[1].longitude
 
-    const currentWeatherCity = 'https://api.openweathermap.org/data/2.5/weather?q=' + city[0] + '&units=imperial&APPID=API_KEY_HERE'
+    const currentWeatherCity = 'https://api.openweathermap.org/data/2.5/weather?lat=' + latitude + '&lon=' + longitude + '&units=imperial&appid={API_KEY}';
     
     const response = await fetch(currentWeatherCity);
     if (response.ok) {
       const data = await response.json();
       console.log(data)
       // OUTPUT CITY NAME
-      cityHeading.innerText = 'Weather for ' + cityName + ' (' + cityZip + ')';
+      cityHeading.innerText = cityName + ' (' + cityZip + ')';
 
       // GET ICON FROM 2ND ARRAY IF AVAILABLE
-      let iconTwo = 0;
-      if (data.weather[1]) iconTwo = 1;
+      let iconNum = 0;
+      if (data.weather.length === 2) iconNum = 1;
 
       // Create an object for data.weather[0].icon values and FontAwesome icons
-      // const icon = 'https://openweathermap.org/img/w/' + data.weather[iconTwo].icon + '.png';
+      // const icon = 'https://openweathermap.org/img/w/' + data.weather[iconNum].icon + '.png';
       // weatherIcon.setAttribute('src', icon)
-      const icon = weatherIcons[data.weather[iconTwo].icon];
-      console.log(icon)
+      const icon = weatherIcons[data.weather[iconNum].icon];
       weatherIcon.setAttribute('class', icon)
 
-      // GET TEXT DESCRIPTION FROM 2ND ARRAY (IF AVAILABLE)
-      let descTwo = 0;
-      if (data.weather[1]) descTwo = 1;
-      const weatherDesc = 'Conditions: ' + data.weather[descTwo].main + ' (' + data.weather[descTwo].description + ')';
+      // GET MORE ACCURATE TEXT DESCRIPTION FROM 2ND ARRAY (if it exists)
+      let descNum = 0;
+      if (data.weather.length === 2) descNum = 1;
+      const main = data.weather[descNum].main;
+      const description = data.weather[descNum].description
+
+      // OUTPUT MAIN AND DESCRIPTION IF AVAILABLE, ELSE JUST MAIN 
+      let weatherDesc = `Conditions:  ${main} (${description})`;
+      if (description.split(" ").length < 2) {
+        weatherDesc = `Conditions: ${main}`;
+      }
       currWeatherDesc.innerText = weatherDesc;
 
       // TEMPERATURE
-      const temp = 'Temperature: ' + Math.round(data.main.temp) + `<span class="deg"><sup>&deg;</sup></span>` + ' F';
-      // const celcisu = temp
-      const feelsLike = '(Feels like: ' + Math.round(data.main.feels_like) + `<span>&deg;</span>` + ')';
+      const temp = 'Temperature: ' + Math.round(data.main.temp) + `<span class="deg"><sup>&deg;</sup></span>` + 'F';
+      // const celcius = temp
+      const feelsLike = '(Feels like: ' + Math.round(data.main.feels_like) + '<span>&deg;</span>F' + ')';
       currTemp.innerHTML = temp;
       currFeelsLike.innerHTML = feelsLike
 
@@ -130,8 +151,7 @@ async function fetchCurrent() {
       const lat = data.coord.lat;
       const lon = data.coord.lon;
 
-      // CONVERT LAT & LONG INTO DEGREES
-      // DO I REALLY NEED TO CONVERT TO DEGREES AND MINUTES?
+      // CONVERT LAT & LONG DECIMALS INTO DEGREES (Is this needed?)
       const latInt = Math.trunc(lat);
       let latDecimal,
         latMins,
@@ -213,13 +233,12 @@ async function fetchCurrent() {
       currVisibility.innerText = visibility;
 
       // WIND SPEED, WIND GUST
-      const windSpeed = 'Wind speed: ' + Math.round(data.wind.speed) + ' mph';
+      let windSpeed = '';
+      let windDegree = '';
       let windGust = 'Wind gusts: ' + Math.round(data.wind.gust) + ' mph';
       if (!data.wind.gust) {
         windGust = 'Wind gusts: no gusts';
       }
-      currWindSpeed.innerText = windSpeed;
-      currWindGust.innerText = windGust;
 
       // WIND DIRECTION
       const windDeg = data.wind.deg;
@@ -233,10 +252,27 @@ async function fetchCurrent() {
         })
         return direction;
       }
+      
+      // RESET windSpeed & windDegree IF NO WIND
+      const wind = [windSpeed, windDegree]
 
-      const windDegree = 'Wind dir: ' + windDeg + `<span>&deg;</span>` + getWindDirection(directions);
-      currWindDegree.innerHTML = windDegree;
+      function checkWindSpeed() {
+          if (data.wind.speed === 0) {
+          wind[0] = 'Wind speed: No wind';
+          wind[1] = 'Wind dir: N/A';
+          // return wind;
+        } else {
+          wind[0] = 'Wind speed: ' + Math.round(data.wind.speed) + ' mph';
+          wind[1] = 'Wind dir: ' + windDeg + `<span>&deg;</span>` + getWindDirection(directions);
+          // return wind;
+        }
+        return wind;
+      }
+      checkWindSpeed()
 
+      currWindSpeed.innerText = wind[0];
+      currWindGust.innerText = windGust;
+      currWindDegree.innerHTML = wind[1];
       // return data;
     } else {
       console.log("Not successful");
@@ -259,7 +295,7 @@ async function fetchDailyHourly() {
     const city = await fetchByZip(zipCode);
     const lat = city[1].latitude;
     const long = city[1].longitude;
-    const dayHourWeatherCity = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + long + '&exclude=minutely&units=imperial&appid=API_KEY_HERE';
+    const dayHourWeatherCity = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + long + '&exclude=minutely&units=imperial&appid={API_KEY}';
 
     const response = await fetch(dayHourWeatherCity);
     if (response.ok) {
@@ -314,7 +350,7 @@ async function fetchDailyHourly() {
         </li>`;
 
         const dailyText = document.createElement('li');
-        dailyText.classList.add('daily-data');
+        dailyText.classList.add('daily-data'); // already have this above?
         dailyData.insertAdjacentHTML('beforeend', dayOutput);
       });
 
@@ -345,8 +381,8 @@ async function fetchDailyHourly() {
           </ul>
         </li>`;
         
-        const weatherText = document.createElement('li');
-        weatherText.classList.add('hourly-data');
+        const hourlyText = document.createElement('li');
+        hourlyText.classList.add('hourly-data'); // already have this above?
         hourlyData.insertAdjacentHTML('beforeend', hrOutput);
       })
       
@@ -372,7 +408,8 @@ async function fetchDailyHourly() {
         weatherAlerts.insertAdjacentHTML('beforeend', alertOutput);
         console.log('Alert exists');
       } else {
-        console.log('Weather alerts for this area: No alerts');
+        // console.log('Weather alerts for this area: No alerts');
+        weatherAlerts.innerText = 'Weather alerts for this area: No alerts'
       }
 
       if (data.alert) {
@@ -393,8 +430,13 @@ async function fetchDailyHourly() {
 }
 fetchDailyHourly();
 
+// Get user's current time
 function currentTime() {
   let date = new Date(); 
+  const day = date.getDate();
+  const month = date.getMonth();
+  const year = date.getFullYear();
+  const todayDate = `${month}-${day}-${year}`
   let hh = date.getHours();
   let mm = date.getMinutes();
   let ss = date.getSeconds();
@@ -412,7 +454,7 @@ function currentTime() {
    mm = (mm < 10) ? "0" + mm : mm;
    ss = (ss < 10) ? "0" + ss : ss;
     
-   const time = hh + ":" + mm + ":" + ss + " " + session;
+   const time = todayDate + ', ' + hh + ":" + mm + ":" + ss + " " + session;
 
   document.getElementById("clock").innerText = time; 
   const t = setTimeout(function(){ currentTime() }, 1000);
@@ -420,9 +462,14 @@ function currentTime() {
 currentTime();
 window.addEventListener('load', currentTime)
 
-/* 
+/*
 function success(pos) {
-  console.log("Your latitude is: " + pos.coords.latitude + " and your longitude is : " + pos.coords.longitude )
+  const userLat = pos.coords.latitude.toFixed(2) * 1;
+  const userLong = pos.coords.longitude.toFixed(2) * 1;
+  const coordinates = [userLat, userLong];
+  // this takes really long so I would have to wrap the entire app inside this function as an asyn/await
+  console.log(coordinates);
+  return coordinates;
 }
 
 function error(err) {
