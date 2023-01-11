@@ -1,3 +1,5 @@
+// @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600&display=swap');
+
 *,
 *::before,
 *::after {
@@ -6,7 +8,8 @@
 
 body {
   // font-family: Segoe script, cursive;
-  font-family: cursive;
+  // font-family: cursive;
+  font-family: 'Poppins', sans-serif;
   font-size: 16px;
   margin: 0;
   padding: 0;
@@ -15,6 +18,9 @@ body {
   background-color: #eee;
   background-color: #f1f5f9;
   // background-color: #dce7f3;
+  color: #fff;
+  background: linear-gradient(#0066FF, #070707) fixed center bottom no-repeat;
+  // background: url(https://res.cloudinary.com/dannycoder/image/upload/v1450159982/night_obgscx.jpg) fixed center bottom no-repeat;
 }
 
 label {
@@ -38,7 +44,7 @@ h2 {
 }
 
 span {
-  font-size: 0.875rem;
+  font-size: 1.25rem;
   display: inline-block;
   text-align: center;
   margin: 0 auto;
@@ -72,7 +78,6 @@ p.temp {
 }
 
 .feels-like {
-  display: block;
   margin: 0 auto 1em;
   text-align: center;
 }
@@ -83,10 +88,12 @@ p.temp {
   width: 80%;
   max-width: 1100px;
   margin: 0 auto 1em;
-  border: 1px solid #ccc;
   justify-content: space-evenly;
   flex-wrap: wrap;
-  background-color: #f9f5f1;
+  border: 1px solid #ccc;
+  border-radius: 1em;
+  background-color: rgba(255, 255, 255, 0.1);
+  // background: linear-gradient(#0066FF, #070707);
 }
 
 .hourly-data {
@@ -106,14 +113,14 @@ p.temp {
   width: 80%;
   max-width: 1100px;
   padding: 0.5em 0;
-  border: 1px solid #ddd;
-  background-color: #ebf8fd;
+  gap: 1.5em;
 }
 
 .curr-hour,
 .curr-day {
-  background-color: #f9f5f1;
   border: 1px solid #ccc;
+  border-radius: 1em;
+  background-color: rgba(255, 255, 255, 0.1);
   margin: 0.5rem auto;
   padding: 0.75rem;
 }
@@ -126,6 +133,7 @@ p.temp {
   text-underline-offset: 0.25em;
   font-weight: 600;
   color: rgb(24, 17, 81);
+  color: #fff;
 }
 
 p {
@@ -141,6 +149,7 @@ p {
   font-size: 0.75rem;
   line-height: 1.1;
   color: #555;
+  color: #fff;
 }
 
 .temp,
@@ -152,7 +161,7 @@ p {
 //   display: inline-block;
 // }
 
-.fa-solid, .fa-regular {
+.fa-solid, .fa-regular, .fa-light, .fa-thin {
   font-size: 3rem;
   margin: 0.5em 0;
 }
@@ -165,12 +174,38 @@ p {
   color: #ccc;
 }
 .fa-cloud {
-  color: #777;
+  color: #999;
 }
 .fa-snowflake {
   color: silver;
   background-color: white;
   padding: 0.125em;
+}
+.fa-droplet, .fa-wind {
+  color: skyblue;
+}
+.fa-gauge {
+  color: lightcoral;
+}
+.fa-exclamation, .fa-circle-exclamation, .fa-triangle-exclamation {
+  color: orange;
+}
+
+.small {
+  font-size:0.875rem;
+}
+.fa-solid.fa-wind, .fa-regular.fa-sun, .fa-regular.fa-moon, .fa-solid.fa-sun, .fa-duotone.fa-sun, .fa-solid.fa-droplet, .fa-regular.fa-gauge, .fa-solid.fa-gauge, .fa-thin.fa-gauge, .fa-solid.fa-eye-slash, .fa-regular.fa-eye-slash, .fa-solid.fa-triangle-exclamation, .fa-solid.fa-exclamation, .fa-solid.fa-circle-exclamation {
+  font-size: 1.25rem;
+  margin-right: 0.375em;
+}
+
+.fa-solid.fa-temperature-half {
+  font-size: 2.25rem;
+  margin-right: 0.5em;
+}
+
+.hr-fl {
+  font-size: 0.875rem;
 }
 
 @media (min-width: 501px) {

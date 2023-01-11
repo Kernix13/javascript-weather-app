@@ -1,0 +1,23 @@
+{
+  "name": "javascript-weather-app",
+  "version": "1.0.0",
+  "description": "Conversion of my jQuery weather app to pure JavaScript. Data from openweather.org. I will eventually use Parcel to compile the SCSS files which I don't have yet, plus I am still building the UI in Figma.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kernix13/javascript-weather-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kernix13/javascript-weather-app/issues"
+  },
+  "homepage": "https://github.com/Kernix13/javascript-weather-app#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3"
+  }
+}

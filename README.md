@@ -2,7 +2,7 @@
 
 Conversion of my jQuery weather app to pure JavaScript. Data from openweather.org. I will eventually use Parcel to compile the SCSS files which I don't have yet, plus I am still building the UI in Figma.
 
-> this is still a Work-In-Progress. I will eventually create a React version for the settings functionality
+> HOW DO I USE ENVIRONMENT VARIABLES SO THAT I DO NOT PUSH MY API KEY?
 
 ## TO-DO Items
 
@@ -10,6 +10,7 @@ Conversion of my jQuery weather app to pure JavaScript. Data from openweather.or
 1. Weather by Zip Code (DONE)
 1. Finish pade designs in Figma (in process)
 1. Total redo of the CSS - MOBILE-FIRST
+1. Have body background-color change from day to night based on sunrise and sunset times with a 20+ minute transition between
 1. Get zip code input field working
 1. Set weather by user's Geolocation, else default to input field (Not realistic), so maybe set to a default city like Philadelphia or New York
 1. Fahrenheit to Celsius (imperial to metric) conversion (Settings?)

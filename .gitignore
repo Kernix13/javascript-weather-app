@@ -24,11 +24,6 @@ ehthumbs_vista.db
 *.tmp
 
 # Personal files
-index.html
-test.html
-/src/js/index.js
-/src/js/test.js
-/src/scss/test.css
 notes.md
 parcel.md
 sass.md

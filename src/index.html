@@ -5,7 +5,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="./src/images/favicon2.ico" rel="icon" type="image/x-icon" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins">
+  <link href="./images/favicon2.ico" rel="icon" type="image/x-icon" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
     integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -21,7 +22,6 @@
       <input id="user-city" type="submit" />
     </form>
     <div class="container">
-      <div class="location"></div>
       <h2 class="city"></h2>
       <div id="clock"></div>
       <div>
@@ -31,43 +31,49 @@
       <!-- <img class="icon" /> -->
       <i id="icon"></i>
       <p class="weather"></p>
-      <p class="temp"></p>
-      <span id="wtf" class="feels-like"></span>
+      <p><span class="temp"></span> <span class="feels-like"></span></p>
+
     </div>
     <div class="row">
       <div class="col">
-        <p class="wind-speed"></p>
-        <p class="wind-gust"></p>
-        <p class="wind-degree"></p>
+        <p><i class="fa-solid fa-wind"></i><span class="wind-speed"></span> <span class="wind-degree"></span></p>
+        <p><i class="fa-solid fa-wind"></i><span class="wind-gust"></span></p>
+        <!-- <p class="wind-gust"></p> -->
+        <!-- <p class="wind-degree"></p> -->
       </div>
       <div class="col">
-        <p class="sunrise"></p>
-        <p class="sunset"></p>
+        <p><i class="fa-solid fa-sun"></i><span class="sunrise"></span></p>
+        <p><i class="fa-regular fa-sun"></i><span class="sunset"></span></p>
         <p class="daylight"></p>
       </div>
     </div>
     <div class="row">
       <div class="col">
-        <p class="humidity"></p>
-        <p class="pressure"></p>
+        <p><i class="fa-solid fa-droplet"></i><span class="humidity"></span></p>
+        <p><i class="fa-solid fa-gauge"></i><span class="pressure"></span></p>
+        <!-- <p class="humidity"></p>
+        <p class="pressure"></p> -->
       </div>
       <div class="col">
-        <p class="visibility"></p>
+        <p><i class="fa-regular fa-eye-slash"></i><span class="visibility"></span></p>
+        <!-- <p class="visibility"></p> -->
+        <p><i class="fa-solid fa-triangle-exclamation"></i><span class="alert"></span></p>
         <p class="alert"></p>
       </div>
     </div>
-  
-    <div class="hourly">
-      <ul id="hourly-data" class="hourly-data"></ul>
-    </div>
-  
+
     <div class="daily">
       <ul id="daily-data" class="daily-data"></ul>
     </div>
-  
+
+    <div class="hourly">
+      <ul id="hourly-data" class="hourly-data"></ul>
+    </div>
+
     <div class="alerts">
       <p id="weather-alerts" class="weather-alerts"></p>
     </div>
+    <div id="weather-map"></div>
   </div>
 
   <script src="./js/script.js"></script>

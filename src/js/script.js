@@ -12,15 +12,15 @@ const weatherIcon = document.getElementById('icon');
 const currWeatherDesc = document.querySelector('.weather');
 const currTemp = document.querySelector('.temp');
 const currFeelsLike = document.querySelector('.feels-like');
+const currWindSpeed = document.querySelector('.wind-speed');
+const currWindGust = document.querySelector('.wind-gust');
+const currWindDegree = document.querySelector('.wind-degree');
 const sunrise = document.querySelector('.sunrise');
 const sunset = document.querySelector('.sunset');
 const totalSunlight = document.querySelector('.daylight');
 const currHumidity = document.querySelector('.humidity');
 const currPressure = document.querySelector('.pressure');
 const currVisibility = document.querySelector('.visibility');
-const currWindSpeed = document.querySelector('.wind-speed');
-const currWindGust = document.querySelector('.wind-gust');
-const currWindDegree = document.querySelector('.wind-degree');
 const weatherAlert = document.querySelector('.alert');
 
 const directions = [
@@ -40,7 +40,7 @@ const directions = [
   [281.25, 303.75, ' WNW'],
   [303.75, 326.25, ' NW'],
   [326.25, 348.75, ' NNW'],
-  [348.75, 0, ' N'],
+  [348.75, 360.00, ' N'],
 ];
 
 const weatherIcons = {
@@ -65,13 +65,12 @@ const weatherIcons = {
 }
 
 let zipCode = '19064';
-let countryCode = 'US';
+let countryCode = 'US'; // outputs as `undefined` in the end point below
 
-async function fetchByZip(zip) {
-  // if (zip_code) zipCode = zip_code;
+async function fetchByZip(zip, country) {
 
   try {
-    const response = await fetch(`http://api.openweathermap.org/geo/1.0/zip?zip=${zip},${countryCode}&appid={API_ID0}`);
+    const response = await fetch(`http://api.openweathermap.org/geo/1.0/zip?zip=${zip},US&appid=WEATHER_API_KEY`);
 
     if (response.ok) {
       const data = await response.json();
@@ -83,7 +82,7 @@ async function fetchByZip(zip) {
       }
       const output = [city, cityData];
       // console.log(output)
-      // return output;
+      return output;
     } else {
       console.log("Not Successful");
     }
@@ -92,18 +91,16 @@ async function fetchByZip(zip) {
   }
 }
 
-// if (zip_code) zipCode = zip_code;
-// fetchByZip(zipCode)
 // CURRENT WEATHER CONDITIONS
 async function fetchCurrent() {
   try {
-    const city = await fetchByZip(zipCode);
+    const city = await fetchByZip(zipCode, countryCode);
     const cityName = city[0]
     const cityZip = city[1].zip
     const latitude = city[1].latitude
     const longitude = city[1].longitude
 
-    const currentWeatherCity = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=imperial&appid={API_ID0}`;
+    const currentWeatherCity = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=imperial&appid=WEATHER_API_KEY`;
     
     const response = await fetch(currentWeatherCity);
     if (response.ok) {
@@ -111,7 +108,7 @@ async function fetchCurrent() {
       console.log(data);
 
       // OUTPUT CITY NAME
-      cityHeading.innerText = cityName + ' (' + cityZip + ')';
+      cityHeading.innerText = `${cityName} (${cityZip})`;
 
       // GET ICON FROM 2ND ARRAY IF AVAILABLE
       let iconNum = 0;
@@ -131,100 +128,48 @@ async function fetchCurrent() {
       const description = data.weather[descNum].description
 
       // OUTPUT MAIN AND DESCRIPTION IF AVAILABLE, ELSE JUST MAIN 
-      let weatherDesc = `Conditions:  ${main} (${description})`;
+      let weatherDesc = `${main} (${description})`;
       if (description.split(" ").length < 2) {
-        weatherDesc = `Conditions: ${main}`;
+        weatherDesc = `${main}`;
       }
       currWeatherDesc.innerText = weatherDesc;
 
       // TEMPERATURE
-      const temp = 'Temperature: ' + Math.round(data.main.temp) + `<span class="deg"><sup>&deg;</sup></span>` + 'F';
+      const temp = `${Math.round(data.main.temp)}<span class="deg"><sup>&deg;</sup></span>F`;
       // const celcius = temp
-      const feelsLike = '(Feels like: ' + Math.round(data.main.feels_like) + '<span>&deg;</span>F' + ')';
+      const feelsLike = `(Feels like: ${Math.round(data.main.feels_like)}<span>&deg;</span>F)`;
       currTemp.innerHTML = temp;
       currFeelsLike.innerHTML = feelsLike
 
       // COORDINATES
-      const lat = data.coord.lat;
-      const lon = data.coord.lon;
-
-      // CONVERT LAT & LONG DECIMALS INTO DEGREES (Is this needed?)
-      const latInt = Math.trunc(lat);
-      let latDecimal,
-        latMins,
-        latMinInt,
-        latMinDec,
-        latSecs = '';
-
-      if (lat > 0) {
-        latDecimal = lat - latInt;
-        latMins = latDecimal * 60;
-        latMinInt = Math.trunc(latMins);
-        latMinDec = latMins - latMinInt;
-        latSecs = (latMinDec * 60).toFixed(1);
-      } else {
-        latDecimal = Math.abs(lat - latInt);
-        latMins = latDecimal * 60;
-        latMinInt = Math.trunc(latMins);
-        latMinDec = latMins - latMinInt;
-        latSecs = (latMinDec * 60).toFixed(1);
-      }
-
-      const lonInt = Math.trunc(lon);
-      let lonDecimal,
-        lonMins,
-        lonMinInt,
-        lonMinDec,
-        lonSecs = '';
-
-      if (lon > 0) {
-        lonDecimal = lon - lonInt;
-        lonMins = lonDecimal * 60;
-        lonMinInt = Math.trunc(lonMins);
-        lonMinDec = lonMins - lonMinInt;
-        lonSecs = (lonMinDec * 60).toFixed(1);
-      } else {
-        lonDecimal = Math.abs(lon - lonInt);
-        lonMins = lonDecimal * 60;
-        lonMinInt = Math.trunc(lonMins);
-        lonMinDec = lonMins - lonMinInt;
-        lonSecs = (lonMinDec * 60).toFixed(1);
-      }
-
-      const latDegMinSec = latInt + `<span>&deg;</span> ` + latMinInt + `<span>&prime;</span> ` + latSecs + `<span>&Prime;</span> `;
-      const lonDegMinSec = lonInt + `<span>&deg;</span> ` + lonMinInt + `<span>&prime;</span> ` + lonSecs + `<span>&Prime;</span> `;
-      const latDesc = 'Lat.: ' + latDegMinSec + ' (' + data.coord.lat + ') | ';
-      const longDesc = 'Long.: ' + lonDegMinSec + ' (' + data.coord.lon + ')';
-      // cityLat.innerHTML = latDesc
-      // cityLong.innerHTML = longDesc
-      cityLat.innerHTML = 'Lat.: ' + data.coord.lat + ' | ';
-      cityLong.innerHTML = 'Long.: ' + data.coord.lon;
+      cityLat.innerHTML = `Lat.: ${data.coord.lat} | `;
+      cityLong.innerHTML = `Long.: ${data.coord.lon}`;
 
       // SUNRISE
       const sunriseTime = data.sys.sunrise;
       const dateRise = new Date(sunriseTime * 1000);
-      const riseTime = 'Sunrise: ' + dateRise.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const riseTime = `Rise: ${dateRise.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
       sunrise.innerHTML = riseTime
 
       // SUNSET
       const sunsetTime = data.sys.sunset;
       const dateSet = new Date(sunsetTime * 1000);
-      const setTime = 'Sunset: ' + dateSet.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const setTime = `Set: ${dateSet.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
       sunset.innerHTML = setTime
 
-      // Calculate hours of daylight
+      // CALCULATE HOURS OF DAYLIGHT
       const daylight = sunsetTime - sunriseTime;
       const lightHrs = Math.trunc(daylight / 3600);
       const lightMins = Math.trunc((daylight / 3600 - lightHrs) * 60);
       let lightSecs = Math.round(((daylight / 3600 - lightHrs) * 60 - lightMins) * 60);
       if (lightSecs < 10) lightSecs = `0${lightSecs}`
-      const hrsOfLight = 'Hrs of light: ' + lightHrs + ':' + lightMins + ':' + lightSecs;
-      totalSunlight.innerText = hrsOfLight;
+      const hrsOfLight = `Hrs of light: ${lightHrs}:${lightMins}:${lightSecs}`;
+      // totalSunlight.innerText = hrsOfLight;
 
       // HUMIDITY, PRESSURE, VISIBILITY
-      const humidity = 'Humidity: ' + data.main.humidity + '%';
-      const pressure = 'Pressure: ' + data.main.pressure + ' hPa';
-      const visibility = 'Visibility: ' + ((data.visibility / 1000) * 0.621371).toFixed(1) + ' mi';
+      const humidity = `${data.main.humidity}%`;
+      const pressure = `${data.main.pressure} hPa`;
+      const visibility = `${((data.visibility / 1000) * 0.621371).toFixed(1)} mi`;
       currHumidity.innerText = humidity;
       currPressure.innerText = pressure;
       currVisibility.innerText = visibility;
@@ -232,9 +177,9 @@ async function fetchCurrent() {
       // WIND SPEED, WIND GUST
       let windSpeed = '';
       let windDegree = '';
-      let windGust = 'Wind gusts: ' + Math.round(data.wind.gust) + ' mph';
+      let windGust = `Gusts: ${Math.round(data.wind.gust)} mph`;
       if (!data.wind.gust) {
-        windGust = 'Wind gusts: no gusts';
+        windGust = 'Gusts: N/A';
       }
 
       // WIND DIRECTION
@@ -255,13 +200,13 @@ async function fetchCurrent() {
 
       function checkWindSpeed() {
           if (data.wind.speed === 0) {
-          wind[0] = 'Wind speed: No wind';
-          wind[1] = 'Wind dir: N/A';
-          // return wind;
+          wind[0] = 'No wind';
+          wind[1] = '';
         } else {
-          wind[0] = 'Wind speed: ' + Math.round(data.wind.speed) + ' mph';
-          wind[1] = 'Wind dir: ' + windDeg + `<span>&deg;</span>` + getWindDirection(directions);
-          // return wind;
+          wind[0] = `${Math.round(data.wind.speed)} mph`;
+          // wind[0] = `Wind speed: ${Math.round(data.wind.speed)} mph`;
+          wind[1] = `${windDeg}<span>&deg;</span>${getWindDirection(directions)}`;
+          // wind[1] = `Wind dir: ${windDeg}<span>&deg;</span>${getWindDirection(directions)}`;
         }
         return wind;
       }
@@ -273,11 +218,11 @@ async function fetchCurrent() {
 
       // CURRENT ALERT NOTICE OUTPUT
       if (data.alert) {
-        const alertNotice = 'Alerts: ' + `${alertEvent}`;
+        const alertNotice = `${alertEvent}`;
         weatherAlert.innerText = alertNotice
       } else {
         console.log('Weather Alerts: No alerts for your location.');
-        const alertNotice = 'Alerts: No alerts.';
+        const alertNotice = 'No alerts';
         weatherAlert.innerText = alertNotice;
       }
 
@@ -303,7 +248,8 @@ async function fetchDailyHourly() {
     const city = await fetchByZip(zipCode);
     const lat = city[1].latitude;
     const long = city[1].longitude;
-    const dayHourWeatherCity = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude=minutely&units=imperial&appid={API_ID0}`;
+    console.log(lat, long)
+    const dayHourWeatherCity = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude=minutely&units=imperial&appid=WEATHER_API_KEY`;
 
     const response = await fetch(dayHourWeatherCity);
     if (response.ok) {
@@ -315,28 +261,20 @@ async function fetchDailyHourly() {
 
       // DAILY LOOP
       dayData.map(item => {
-        const date = item.dt;
-        const date2 = new Date(date * 1000).toLocaleDateString('en-us', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
-        const tempMin = Math.round(item.temp.min);
-        const tempMax = Math.round(item.temp.max);
-        const precip = item.pop * 100;
+        const date2 = new Date(item.dt * 1000).toLocaleDateString('en-us', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
         const moonPhase = Math.round(item.moon_phase * 100);
-        const moonRise = item.moonrise;
-        const moonrise2 = new Date(moonRise * 1000).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-        const moonSet = item.moonset;
-        const moonset2 = new Date(moonSet * 1000).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        const moonrise = new Date(item.moonrise * 1000).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        const moonSet = new Date(item.moonset * 1000).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
         const dailyMain = item.weather[0].main.slice(0, 1).toUpperCase() + item.weather[0].main.slice(1);
         const humidity = item.humidity;
         const dailyDesc = item.weather[0].description;
 
         // SUNRISE
-        const sunriseTime = item.sunrise;
-        const dateRise = new Date(sunriseTime * 1000);
+        const dateRise = new Date(item.sunrise * 1000);
         const riseTime = 'Sunrise: ' + dateRise.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
         // SUNSET
-        const sunsetTime = item.sunset;
-        const dateSet = new Date(sunsetTime * 1000);
+        const dateSet = new Date(item.sunset * 1000);
         const setTime = 'Sunset: ' + dateSet.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
         // OUTPUT DAILY CONDITIONS
@@ -344,13 +282,13 @@ async function fetchDailyHourly() {
           <ul id="daily-${item}">
             <li>${dailyMain}</li>
 
-            <li>Low: ${tempMin}<span>&deg;</span>F</li>
-            <li>High: ${tempMax}<span>&deg;</span>F</li>
-            <li>Precip: ${precip}%</li>
+            <li>Low: ${Math.round(item.temp.min)}<span>&deg;</span>F</li>
+            <li>High: ${Math.round(item.temp.max)}<span>&deg;</span>F</li>
+            <li>Precip: ${Math.round(item.pop * 100)}%</li>
 
             <li>Moon phase: ${moonPhase}%</li>
-            <li>Moon rise: ${moonrise2}</li>
-            <li>Moon set: ${moonset2}</li>
+            <li>Moon rise: ${moonrise}</li>
+            <li>Moon set: ${moonSet}</li>
             
             <li>${riseTime}</li>
             <li>${setTime}</li>
@@ -365,15 +303,13 @@ async function fetchDailyHourly() {
       // HOURLY LOOP - let hrData = data.hourly;
       hrData.map(item => {
         const desc = item.weather[0].description.slice(0, 1).toUpperCase() + item.weather[0].description.slice(1);
-        const time = item.dt;
-        const hour = new Date(time * 1000);
+        const hour = new Date(item.dt * 1000);
         const outputHour = hour.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-        const temp = 'Temp.: ' + Math.round(item.temp) + `<span>&deg;</span>` + 'F';
-        const feelsLike = '(Feels like: ' + Math.round(item.feels_like) + `<span>&deg;</span>` + ')';
+        const temp = `${Math.round(item.temp)}<span>&deg;</span>F`;
+        const feelsLike = `(Feels like: ${Math.round(item.feels_like)}<span class="hr-fl">&deg;</span>)`;
         const pop = Math.round(item.pop * 100) + '%';
-        const humidity = item.humidity + '%';
-        const windSpeed = 'Wind: ' + Math.round(item.wind_speed) + ' mph';
-        const gustSpeed = 'Gusts: ' + Math.round(item.wind_gust) + ' mph';
+        const windSpeed = `<i class="fa-solid fa-wind"></i> ${Math.round(item.wind_speed)} mph`;
+        const gustSpeed = ` (${Math.round(item.wind_gust)} mph)`;
         const dewPt = Math.round(item.dew_point) + `<span>&deg;</span>` + 'F';
         const pressure = item.pressure + ' mb';
         const visibility = ((item.visibility / 1000) * 0.621371).toFixed(1) + ' mi';
@@ -381,10 +317,10 @@ async function fetchDailyHourly() {
         // OUTPUT HOURLY CONDITIONS
         const hrOutput = `<li class="curr-hour"><span class="bold">${outputHour}</span>
           <ul id="hourly-${item}">
-            <li>Conditions: ${desc}</li>
-            <li>${temp} <span>${feelsLike}</span></li>
-            <li>${windSpeed} | ${gustSpeed}</li>
-            <li>Humidity: ${humidity} | Precip.: ${pop}</li>
+            <li>${desc}</li>
+            <li>${temp} <span class="hr-fl">${feelsLike}</span></li>
+            <li>${windSpeed} ${gustSpeed}</li>
+            <li><i class="fa-solid fa-droplet"></i> ${item.humidity}% | Precip.: ${pop}</li>
           </ul>
         </li>`;
         
@@ -430,29 +366,19 @@ fetchDailyHourly();
 
 // Get user's current time
 function currentTime() {
+
+  const options = {
+  weekday: "short",     // or "long", "narrow"
+  year: "numeric",      // or "2-digit"
+  month: "short",        // or "numeric", "short", "2-digit"
+  day: "numeric",       // or "2-digit"
+  hour: "2-digit",      // or "numeric"
+  minute: "2-digit",    // or "numeric"
+  second: "2-digit",    // or "numeric"
+};
+
   let date = new Date(); 
-  const day = date.getDate();
-  const month = date.getMonth();
-  const year = date.getFullYear();
-  const todayDate = `${month}-${day}-${year}`
-  let hh = date.getHours();
-  let mm = date.getMinutes();
-  let ss = date.getSeconds();
-  let session = "AM";
-
-  if(hh === 0){
-      hh = 12;
-  }
-  if(hh > 12){
-      hh = hh - 12;
-      session = "PM";
-   }
-
-   hh = (hh < 10) ? "0" + hh : hh;
-   mm = (mm < 10) ? "0" + mm : mm;
-   ss = (ss < 10) ? "0" + ss : ss;
-    
-   const time = todayDate + ', ' + hh + ":" + mm + ":" + ss + " " + session;
+  const time = date.toLocaleDateString("en-US", options);
 
   document.getElementById("clock").innerText = time; 
   const t = setTimeout(function(){ currentTime() }, 1000);
