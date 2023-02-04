@@ -70,7 +70,7 @@ let countryCode = 'US'; // outputs as `undefined` in the end point below
 async function fetchByZip(zip, country) {
 
   try {
-    const response = await fetch(`http://api.openweathermap.org/geo/1.0/zip?zip=${zip},US&appid=WEATHER_API_KEY`);
+    const response = await fetch(`http://api.openweathermap.org/geo/1.0/zip?zip=${zip},US&appid=804cf3b11e9abeee25a8f6e6cb189d31`);
 
     if (response.ok) {
       const data = await response.json();
@@ -100,7 +100,7 @@ async function fetchCurrent() {
     const latitude = city[1].latitude
     const longitude = city[1].longitude
 
-    const currentWeatherCity = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=imperial&appid=WEATHER_API_KEY`;
+    const currentWeatherCity = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=imperial&appid=804cf3b11e9abeee25a8f6e6cb189d31`;
     
     const response = await fetch(currentWeatherCity);
     if (response.ok) {
@@ -205,7 +205,7 @@ async function fetchCurrent() {
         } else {
           wind[0] = `${Math.round(data.wind.speed)} mph`;
           // wind[0] = `Wind speed: ${Math.round(data.wind.speed)} mph`;
-          wind[1] = `${windDeg}<span>&deg;</span>${getWindDirection(directions)}`;
+          wind[1] = `(${windDeg}<span>&deg;</span>${getWindDirection(directions)})`;
           // wind[1] = `Wind dir: ${windDeg}<span>&deg;</span>${getWindDirection(directions)}`;
         }
         return wind;
@@ -249,7 +249,7 @@ async function fetchDailyHourly() {
     const lat = city[1].latitude;
     const long = city[1].longitude;
     console.log(lat, long)
-    const dayHourWeatherCity = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude=minutely&units=imperial&appid=WEATHER_API_KEY`;
+    const dayHourWeatherCity = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude=minutely&units=imperial&appid=804cf3b11e9abeee25a8f6e6cb189d31`;
 
     const response = await fetch(dayHourWeatherCity);
     if (response.ok) {
@@ -374,7 +374,7 @@ function currentTime() {
   day: "numeric",       // or "2-digit"
   hour: "2-digit",      // or "numeric"
   minute: "2-digit",    // or "numeric"
-  second: "2-digit",    // or "numeric"
+  // second: "2-digit",    // or "numeric"
 };
 
   let date = new Date(); 
