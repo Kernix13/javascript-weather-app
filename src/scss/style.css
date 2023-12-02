@@ -51,9 +51,9 @@ body {
     radial-gradient(at 2% 57%, hsla(334, 60%, 66%, 1) 0px, transparent 50%);
 }
 
-.bg-hot {
+// .bg-hot {
 
-}
+// }
 
 label {
   display: block;
@@ -66,9 +66,9 @@ ul {
   padding: 0;
 }
 
-ul li {
-  padding-left: 1em;
-}
+// ul li {
+//   padding-left: 1em;
+// }
 
 h2 {
   margin: 0 0 0.25em;
@@ -226,9 +226,15 @@ p {
 .small {
   font-size:0.875rem;
 }
-.fa-solid.fa-wind, .fa-regular.fa-sun, .fa-regular.fa-moon, .fa-solid.fa-sun, .fa-duotone.fa-sun, .fa-solid.fa-droplet, .fa-regular.fa-gauge, .fa-solid.fa-gauge, .fa-thin.fa-gauge, .fa-solid.fa-eye-slash, .fa-regular.fa-eye-slash, .fa-solid.fa-triangle-exclamation, .fa-solid.fa-exclamation, .fa-solid.fa-circle-exclamation {
+.fa-solid.fa-wind, .fa-regular.fa-sun, .fa-regular.fa-moon, .fa-solid.fa-sun, .fa-duotone.fa-sun, .fa-solid.fa-droplet, .fa-regular.fa-gauge, .fa-solid.fa-gauge, .fa-thin.fa-gauge, .fa-solid.fa-eye-slash, .fa-regular.fa-eye-slash, .fa-solid.fa-triangle-exclamation, .fa-solid.fa-exclamation, .fa-solid.fa-circle-exclamation, .fa-solid.fa-arrow-up-long, .fa-solid.fa-arrow-down-long {
   font-size: 1.25rem;
   margin-right: 0.375em;
+}
+
+.daily.fa-solid.fa-arrow-up-long,
+.daily.fa-solid.fa-arrow-down-long {
+  font-size: 0.875rem;
+  // margin-right: 0.375em;
 }
 
 .fa-solid.fa-temperature-half {

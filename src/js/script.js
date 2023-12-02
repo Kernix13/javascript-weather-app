@@ -23,6 +23,7 @@ const currPressure = document.querySelector('.pressure');
 const currVisibility = document.querySelector('.visibility');
 const weatherAlert = document.querySelector('.alert');
 
+// Think I can do a switch here: case deg > = 0 && deg < 11.25: 
 const directions = [
   [0, 11.25, ' N'],
   [11.25, 33.75, ' NNE'],
@@ -64,8 +65,18 @@ const weatherIcons = {
   '50n': 'fa-solid fa-cloud-rain',
 }
 
-let zipCode = '19064';
+let zipCode = '19064'; // 08260 wilwood
 let countryCode = 'US'; // outputs as `undefined` in the end point below
+
+// Practicing the INTL Formatter
+/*
+  year: "numeric",
+*/
+const formatter = Intl.DateTimeFormat(undefined, {
+  dateStyle: "medium"
+})
+const testDate = formatter.format(new Date())
+console.log(testDate)
 
 async function fetchByZip(zip, country) {
 
@@ -271,27 +282,30 @@ async function fetchDailyHourly() {
 
         // SUNRISE
         const dateRise = new Date(item.sunrise * 1000);
-        const riseTime = 'Sunrise: ' + dateRise.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const riseTime = `${dateRise.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+        // const riseTime = 'Sunrise: ' + dateRise.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
         // SUNSET
         const dateSet = new Date(item.sunset * 1000);
-        const setTime = 'Sunset: ' + dateSet.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const setTime = `${dateSet.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+        // const setTime = 'Sunset: ' + dateSet.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
         // OUTPUT DAILY CONDITIONS
         const dayOutput = `<li class="curr-day"><span class="bold">${date2}</span>
           <ul id="daily-${item}">
             <li>${dailyMain}</li>
 
-            <li>Low: ${Math.round(item.temp.min)}<span>&deg;</span>F</li>
-            <li>High: ${Math.round(item.temp.max)}<span>&deg;</span>F</li>
+            <li>Lo: ${Math.round(item.temp.min)}<span>&deg;</span>F | Hi: ${Math.round(item.temp.max)}<span>&deg;</span>F</li>
+            <li>Hi: ${Math.round(item.temp.max)}<span>&deg;</span>F</li>
             <li>Precip: ${Math.round(item.pop * 100)}%</li>
 
-            <li>Moon phase: ${moonPhase}%</li>
+            <li><i class="daily fa-solid fa-sun"></i></li>
+            <li>${riseTime} | ${setTime}</li>
+            <li>${setTime}</li>
+
             <li>Moon rise: ${moonrise}</li>
             <li>Moon set: ${moonSet}</li>
-            
-            <li>${riseTime}</li>
-            <li>${setTime}</li>
+            <li>Moon phase: ${moonPhase}%</li>
           </ul>
         </li>`;
 
